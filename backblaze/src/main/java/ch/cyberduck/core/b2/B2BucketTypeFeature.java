@@ -85,7 +85,7 @@ public class B2BucketTypeFeature implements AclPermission, Location {
     }
 
     @Override
-    public List<Acl.User> getAvailableAclUsers() {
+    public List<Acl.User> getAvailableAclUsers(final List<Path> files) {
         return new ArrayList<>(Collections.singletonList(
                 new Acl.GroupUser(Acl.GroupUser.EVERYONE, false))
         );
