@@ -1919,7 +1919,7 @@ public class InfoController extends ToolbarWindowController {
         if(this.toggleS3Settings(false)) {
             final Path file = this.getSelected();
             if(session.getFeature(Redundancy.class) != null) {
-                for(String redundancy : session.getFeature(Redundancy.class).getClasses()) {
+                for(String redundancy : session.getFeature(Redundancy.class).getClasses(file)) {
                     storageClassPopup.addItemWithTitle(LocaleFactory.localizedString(redundancy, "S3"));
                     storageClassPopup.lastItem().setRepresentedObject(redundancy);
                 }

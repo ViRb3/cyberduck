@@ -1387,7 +1387,7 @@ namespace Ch.Cyberduck.Ui.Controller
                 Redundancy redundancyFeature = (Redundancy)session.getFeature(typeof(Redundancy));
                 if (redundancyFeature != null)
                 {
-                    Iterator iter = redundancyFeature.getClasses().iterator();
+                    Iterator iter = redundancyFeature.getClasses(_container).iterator();
                     while (iter.hasNext())
                     {
                         string redundancy = (string)iter.next();
