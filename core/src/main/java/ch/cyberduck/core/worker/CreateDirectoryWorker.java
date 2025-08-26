@@ -62,7 +62,7 @@ public class CreateDirectoryWorker extends Worker<Path> {
         if(PreferencesFactory.get().getBoolean("touch.permissions.change")) {
             final UnixPermission permission = session.getFeature(UnixPermission.class);
             if(permission != null) {
-                status.setPermission(permission.getDefault(EnumSet.of(Path.Type.directory)));
+                status.setPermission(permission.getDefault(folder.getParent(), EnumSet.of(Path.Type.directory)));
             }
             final AclPermission acl = session.getFeature(AclPermission.class);
             if(acl != null) {

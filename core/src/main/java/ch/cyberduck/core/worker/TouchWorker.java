@@ -73,7 +73,7 @@ public class TouchWorker extends Worker<Path> {
         if(PreferencesFactory.get().getBoolean("touch.permissions.change")) {
             final UnixPermission permission = session.getFeature(UnixPermission.class);
             if(permission != null) {
-                status.setPermission(permission.getDefault(EnumSet.of(Path.Type.file)));
+                status.setPermission(permission.getDefault(file.getParent(), EnumSet.of(Path.Type.file)));
             }
             final AclPermission acl = session.getFeature(AclPermission.class);
             if(acl != null) {
