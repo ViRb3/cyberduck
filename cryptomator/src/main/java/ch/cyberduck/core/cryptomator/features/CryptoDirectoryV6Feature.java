@@ -50,7 +50,7 @@ public class CryptoDirectoryV6Feature<Reply> implements Directory<Reply> {
     }
 
     @Override
-    public Path mkdir(final Path folder, final TransferStatus status) throws BackgroundException {
+    public Path mkdir(final Write<Reply> writer, final Path folder, final TransferStatus status) throws BackgroundException {
         final byte[] directoryId = vault.getDirectoryProvider().createDirectoryId(folder);
         final Path encrypt = vault.encrypt(session, folder, false);
         // Create metadata file for directory
@@ -59,13 +59,13 @@ public class CryptoDirectoryV6Feature<Reply> implements Directory<Reply> {
         new ContentWriter(session).write(directoryMetadataFile, directoryId);
         final Path intermediate = encrypt.getParent();
         if(!session._getFeature(Find.class).find(intermediate)) {
-            session._getFeature(Directory.class).mkdir(intermediate, new TransferStatus().setRegion(status.getRegion()));
+            session._getFeature(Directory.class).mkdir(writer, intermediate, new TransferStatus().setRegion(status.getRegion()));
         }
         // Write header
         final FileHeader header = vault.getFileHeaderCryptor().create();
         status.setHeader(vault.getFileHeaderCryptor().encryptHeader(header));
         status.setNonces(new RandomNonceGenerator(vault.getNonceSize()));
-        final Path target = delegate.withWriter(new CryptoWriteFeature<>(session, writer, vault)).mkdir(encrypt, status);
+        final Path target = delegate.mkdir(writer, encrypt, status);
         // Implementation may return new copy of attributes without encryption attributes
         target.attributes().setDirectoryId(directoryId);
         target.attributes().setDecrypted(folder);

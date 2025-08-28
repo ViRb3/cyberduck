@@ -51,10 +51,10 @@ public class CryptoDirectoryUVFFeature<Reply> extends CryptoDirectoryV7Feature<R
     }
 
     @Override
-    public Path mkdir(final Path folder, final TransferStatus status) throws BackgroundException {
+    public Path mkdir(final Write<Reply> writer, final Path folder, final TransferStatus status) throws BackgroundException {
         final byte[] directoryId = vault.getDirectoryProvider().createDirectoryId(folder);
         // Create metadata file for directory
-        final Path directoryMetadataFolder = session._getFeature(Directory.class).mkdir(vault.encrypt(session, folder, true),
+        final Path directoryMetadataFolder = session._getFeature(Directory.class).mkdir(writer, vault.encrypt(session, folder, true),
                 new TransferStatus().setRegion(status.getRegion()));
         final Path directoryMetadataFile = new Path(directoryMetadataFolder,
                 vault.getDirectoryMetadataFilename(),
@@ -64,13 +64,13 @@ public class CryptoDirectoryUVFFeature<Reply> extends CryptoDirectoryV7Feature<R
         final Path encrypt = vault.encrypt(session, folder, false);
         final Path intermediate = encrypt.getParent();
         if(!session._getFeature(Find.class).find(intermediate)) {
-            session._getFeature(Directory.class).mkdir(intermediate, new TransferStatus().setRegion(status.getRegion()));
+            session._getFeature(Directory.class).mkdir(writer, intermediate, new TransferStatus().setRegion(status.getRegion()));
         }
         // Write metadata
         final FileHeader header = vault.getFileHeaderCryptor().create();
         status.setHeader(vault.getFileHeaderCryptor().encryptHeader(header));
         status.setNonces(new RandomNonceGenerator(vault.getNonceSize()));
-        final Path target = delegate.withWriter(new CryptoWriteFeature<>(session, writer, vault)).mkdir(encrypt, status);
+        final Path target = delegate.mkdir(writer, encrypt, status);
         final Path recoveryDirectoryMetadataFile = new Path(target,
                 vault.getDirectoryMetadataFilename(),
                 EnumSet.of(Path.Type.file));

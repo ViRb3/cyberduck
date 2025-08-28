@@ -39,6 +39,7 @@ import ch.cyberduck.core.exception.LoginCanceledException;
 import ch.cyberduck.core.exception.NotfoundException;
 import ch.cyberduck.core.features.Directory;
 import ch.cyberduck.core.features.Encryption;
+import ch.cyberduck.core.features.Write;
 import ch.cyberduck.core.preferences.Preferences;
 import ch.cyberduck.core.preferences.PreferencesFactory;
 import ch.cyberduck.core.shared.DefaultUrlProvider;
@@ -179,7 +180,7 @@ public class CryptoVault extends AbstractVault {
         if(encryption != null) {
             status.setEncryption(encryption.getDefault(home));
         }
-        final Path vault = directory.mkdir(home, status);
+        final Path vault = directory.mkdir(session._getFeature(Write.class), home, status);
         new ContentWriter(session).write(masterkey, mkArray.toByteArray());
         if(VAULT_VERSION == version) {
             // Create vaultconfig.cryptomator
@@ -202,9 +203,9 @@ public class CryptoVault extends AbstractVault {
         final Path firstLevel = secondLevel.getParent();
         final Path dataDir = firstLevel.getParent();
         log.debug("Create vault root directory at {}", secondLevel);
-        directory.mkdir(dataDir, status);
-        directory.mkdir(firstLevel, status);
-        directory.mkdir(secondLevel, status);
+        directory.mkdir(session._getFeature(Write.class), dataDir, status);
+        directory.mkdir(session._getFeature(Write.class), firstLevel, status);
+        directory.mkdir(session._getFeature(Write.class), secondLevel, status);
         return vault;
     }
 

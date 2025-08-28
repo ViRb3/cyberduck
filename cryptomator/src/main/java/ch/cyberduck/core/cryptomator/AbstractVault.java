@@ -311,7 +311,7 @@ public abstract class AbstractVault implements Vault {
             }
             if(type == Touch.class) {
                 // Use default touch feature because touch with remote implementation will not add encrypted file header
-                return (T) new CryptoTouchFeature(session, new DefaultTouchFeature(session._getFeature(Write.class)), session._getFeature(Write.class), this);
+                return (T) new CryptoTouchFeature(session, new DefaultTouchFeature(session), this);
             }
             if(type == Directory.class) {
                 return (T) (this.getVersion() == VAULT_VERSION_DEPRECATED ?
