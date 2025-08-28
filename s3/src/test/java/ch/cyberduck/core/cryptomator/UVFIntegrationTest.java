@@ -192,7 +192,7 @@ public class UVFIntegrationTest {
                     assertEquals(new String(expected), readFile(storage, new Path("/cyberduckbucket/subdir/alice.txt", EnumSet.of(AbstractPath.Type.file, AbstractPath.Type.decrypted))));
                 }
                 {
-                    storage.getFeature(Directory.class).mkdir(new Path("/cyberduckbucket/subdir/subsubdir", EnumSet.of(AbstractPath.Type.directory, AbstractPath.Type.placeholder, AbstractPath.Type.decrypted)), new TransferStatus());
+                    storage.getFeature(Directory.class).mkdir(storage.getFeature(Write.class), new Path("/cyberduckbucket/subdir/subsubdir", EnumSet.of(AbstractPath.Type.directory, AbstractPath.Type.placeholder, AbstractPath.Type.decrypted)), new TransferStatus());
                     final AttributedList<Path> list = storage.getFeature(ListService.class).list(new Path("/cyberduckbucket/subdir", EnumSet.of(AbstractPath.Type.directory, AbstractPath.Type.placeholder, AbstractPath.Type.decrypted)), new DisabledListProgressListener());
                     storage.getFeature(ListService.class).list(bucket, new DisabledListProgressListener());
                     assertEquals(
