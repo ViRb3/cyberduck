@@ -19,6 +19,7 @@ import ch.cyberduck.core.Path;
 import ch.cyberduck.core.Permission;
 import ch.cyberduck.core.Session;
 import ch.cyberduck.core.exception.BackgroundException;
+import ch.cyberduck.core.exception.UnsupportedException;
 import ch.cyberduck.core.features.UnixPermission;
 import ch.cyberduck.core.transfer.TransferStatus;
 import ch.cyberduck.core.vault.VaultRegistry;
@@ -65,6 +66,9 @@ public class VaultRegistryUnixPermissionFeature implements UnixPermission {
         }
         catch(VaultUnlockCancelException e) {
             return proxy.getDefault(workdir, type);
+        }
+        catch(UnsupportedException e) {
+            return Permission.EMPTY;
         }
     }
 
