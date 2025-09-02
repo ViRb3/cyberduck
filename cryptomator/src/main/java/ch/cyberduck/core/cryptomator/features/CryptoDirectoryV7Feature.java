@@ -36,14 +36,12 @@ public class CryptoDirectoryV7Feature<Reply> implements Directory<Reply> {
     private static final Logger log = LogManager.getLogger(CryptoDirectoryV7Feature.class);
 
     private final Session<?> session;
-    private final Write<Reply> writer;
     private final Directory<Reply> delegate;
     private final AbstractVault vault;
 
     public CryptoDirectoryV7Feature(final Session<?> session, final Directory<Reply> delegate,
-                                    final Write<Reply> writer, final AbstractVault vault) {
+                                    final AbstractVault vault) {
         this.session = session;
-        this.writer = writer;
         this.delegate = delegate;
         this.vault = vault;
     }
