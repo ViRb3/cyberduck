@@ -58,7 +58,7 @@ public class GoogleStorageListServiceTest extends AbstractGoogleStorageTest {
         session.withRegistry(new DefaultVaultRegistry(new DisabledPasswordCallback(), cryptomator));
         assertTrue(new CryptoListService(session, new GoogleStorageObjectListService(session), cryptomator).list(vault).isEmpty());
         final CryptoDirectoryV7Feature<StorageObject> mkdir = new CryptoDirectoryV7Feature<>(session, new GoogleStorageDirectoryFeature(session),
-                new GoogleStorageWriteFeature(session), cryptomator);
+                cryptomator);
         final Path directory1 = mkdir.mkdir(
                 new GoogleStorageWriteFeature(session), new Path(vault, new AlphanumericRandomStringService().random(), EnumSet.of(Path.Type.directory)), new TransferStatus());
         assertNotNull(new CryptoListService(session, new GoogleStorageObjectListService(session), cryptomator).list(vault)
